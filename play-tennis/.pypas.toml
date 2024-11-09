@@ -1,0 +1,9 @@
+slug = "play-tennis"
+bundle = [
+    "docs/README.pdf",
+    "tests/*.py",
+    "main.py",
+    "vendor.py",
+    "testdata.json",
+]
+todo = ["main.py"]
