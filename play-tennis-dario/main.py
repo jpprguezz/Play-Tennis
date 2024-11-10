@@ -1,67 +1,68 @@
 def run(points: str) -> str:
-    puntajes_a = 0
-    puntajes_b = 0
-    juegos_a = 0
-    juegos_b = 0
+    a_points = 0
+    b_points = 0
+    a_games_win = 0
+    b_games_wins = 0
     sets_a = 0
     sets_b = 0
-    tiebreak_a = 0
-    tiebreak_b = 0
-    result = ""
+    result = ''
 
     # recorriendo todos los puntos
     for punto in points:
         if punto == 'A':
-            puntajes_a += 1
+            a_points += 1
         elif punto == 'B':
-            puntajes_b += 1
-        
-        # el juego se gana con 4 puntos o
-        if puntajes_a >= 4 and puntajes_a - puntajes_b >= 2:
-            juegos_a += 1
-            puntajes_a = 0
-            puntajes_b = 0
-        elif puntajes_b >= 4 and puntajes_b - puntajes_a >= 2:
-            juegos_b += 1
-            puntajes_a = 0
-            puntajes_b = 0
-        
+            b_points += 1
+
+        # el juego se gana con 4 puntos o diferencia de dos puntos
+        if a_points >= 4 and a_points - b_points >= 2:
+            a_games_win += 1
+            a_points = 0
+            b_points = 0
+        elif b_points >= 4 and b_points - a_points >= 2:
+            b_games_wins += 1
+            a_points = 0
+            b_points = 0
+
+        if a_games_win == 5 and b_games_wins == 5:
+            continue  # seguimos
+
+        if a_games_win >= 6 and b_games_wins >= 6:
+            if a_games_win == 7:
+                sets_a += 1
+                if result:
+                    result += ' '
+                result += f'{a_games_win}-{b_games_wins}'
+                a_games_win = 0
+                b_games_wins = 0
+
+            elif b_games_wins == 7:
+                sets_b += 1
+                if result:
+                    result += ' '
+                result += f'{a_games_win}-{b_games_wins}'
+                a_games_win = 0
+                b_games_wins = 0
+
         # si un jugador a ganado mas de 6 juegos y tiene de diferencia 2 con el otro jugador gana set
-        if juegos_a >= 6 and juegos_a - juegos_b >= 2:
+        elif a_games_win >= 6 and a_games_win - b_games_wins >= 2:
             sets_a += 1
             if result:
-                result += ''
-            result += f"{juegos_a}-{juegos_b} "
-            juegos_a = 0
-            juegos_b = 0
-        elif juegos_b >= 6 and juegos_b - juegos_a >= 2:
+                result += ' '
+            result += f'{a_games_win}-{b_games_wins}'
+            a_games_win = 0
+            b_games_wins = 0
+
+        elif b_games_wins >= 6 and b_games_wins - a_games_win >= 2:
             sets_b += 1
             if result:
-                result += ''
-            result += f"{juegos_a}-{juegos_b} "
-            juegos_a = 0
-            juegos_b = 0
-        #fumada
-        if juegos_a == 5 and juegos_b ==5:
-            if juegos_a > juegos_b:
-                tiebreak_a +=1
-                juegos_a+=1
-                if tiebreak_a == 2:
-                    sets_a +=1
-                    result += f"{juegos_a}-{juegos_b} "
-                    break
-                else:
-                    sets_b +=1
-                    result += f"{juegos_a}-{juegos_b} "
-                    break
-            else:
-                tiebreak_b +=1
-                juegos_b +=1
-        
-        # gana con 2 sets
+                result += ' '
+            result += f'{a_games_win}-{b_games_wins}'
+            a_games_win = 0
+            b_games_wins = 0
         if sets_a == 2 or sets_b == 2:
             break
-
+    return result
 
 # DO NOT TOUCH THE CODE BELOW
 if __name__ == '__main__':
