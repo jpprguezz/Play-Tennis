@@ -61,8 +61,6 @@ def run(points: str) -> str:
         # gana con 2 sets
         if sets_a == 2 or sets_b == 2:
             break
-      
-    return result
 
 
 # DO NOT TOUCH THE CODE BELOW
