@@ -1,23 +1,12 @@
 def run(points: str) -> str:
-    A_GAME_WIN = 1
-    B_GAME_WIN = 1
     GAME_WIN_POINTS = 4
     GAME_WIN_MARGIN = 2
     GAMES_WIN_SET = 6
     MARGIN_WIN_SET = 2
-    COMPARING_SETS_WINNER = 2
-    A_SET_WIN = 1
-    B_SET_WIN = 1
-    IN_GAME_POINT = 1
-    IN_TIEBREAK_POINT = 1
+    SETS_TO_WIN_MATCH = 2
     TIEBREAK_WIN_POINTS = 7
     TIEBREAK_WIN_MARGIN = 2
-    A_TIEBREAK_SET_WIN = 1
-    B_TIEBREAK_SET_WIN = 1
-    COMPARING_TIEBREAK = 6
-    RESET_POINTS = 0
-    RESET_GAMES = 0
-    RESET_TIEBREAK_WIN_POINTS = 0
+    GAMES_FOR_TIEBREAK = 6
 
     a_points = 0
     b_points = 0
@@ -26,64 +15,65 @@ def run(points: str) -> str:
     sets_a = 0
     sets_b = 0
     result = ''
-    tiebreak = False 
-    tiebreak_a_points = 0  
-    tiebreak_b_points = 0  
+    tiebreak = False
+    tiebreak_a_points = 0
+    tiebreak_b_points = 0
 
     for point in points:
         if tiebreak:
             if point == 'A':
-                tiebreak_a_points += IN_TIEBREAK_POINT
+                tiebreak_a_points += 1
             elif point == 'B':
-                tiebreak_b_points += IN_TIEBREAK_POINT
+                tiebreak_b_points += 1
 
             if tiebreak_a_points >= TIEBREAK_WIN_POINTS and tiebreak_a_points - tiebreak_b_points >= TIEBREAK_WIN_MARGIN:
-                sets_a += A_TIEBREAK_SET_WIN
+                sets_a += 1
                 result += '7-6 '
             elif tiebreak_b_points >= TIEBREAK_WIN_POINTS and tiebreak_b_points - tiebreak_a_points >= TIEBREAK_WIN_MARGIN:
-                sets_b += B_TIEBREAK_SET_WIN
+                sets_b += 1
                 result += '6-7 '
-            if tiebreak_a_points >= TIEBREAK_WIN_POINTS and tiebreak_a_points - tiebreak_b_points >= TIEBREAK_WIN_MARGIN or tiebreak_b_points >= TIEBREAK_WIN_POINTS and tiebreak_b_points - tiebreak_a_points >= TIEBREAK_WIN_MARGIN:
+
+            if (tiebreak_a_points >= TIEBREAK_WIN_POINTS and tiebreak_a_points - tiebreak_b_points >= TIEBREAK_WIN_MARGIN) or (tiebreak_b_points >= TIEBREAK_WIN_POINTS and tiebreak_b_points - tiebreak_a_points >= TIEBREAK_WIN_MARGIN):
                 tiebreak = False
-                a_games = 0
-                b_games = 0
+                a_games = b_games = 0
                 tiebreak_a_points = 0
                 tiebreak_b_points = 0
         else:
             if point == 'A':
-                a_points += IN_GAME_POINT
+                a_points += 1
             elif point == 'B':
-                b_points += IN_GAME_POINT
+                b_points += 1
 
             if a_points >= GAME_WIN_POINTS and a_points - b_points >= GAME_WIN_MARGIN:
-                a_games += A_GAME_WIN
-                a_points = RESET_POINTS
-                b_points = RESET_POINTS
+                a_games += 1
+                a_points = 0
+                b_points = 0
             elif b_points >= GAME_WIN_POINTS and b_points - a_points >= GAME_WIN_MARGIN:
-                b_games += B_GAME_WIN
-                a_points = RESET_POINTS
-                b_points = RESET_POINTS
+                b_games += 1
+                a_points = 0
+                b_points = 0
 
             if a_games >= GAMES_WIN_SET and a_games - b_games >= MARGIN_WIN_SET:
-                sets_a += A_SET_WIN
+                sets_a += 1
                 result += f'{a_games}-{b_games} '
-                a_games = RESET_GAMES
-                b_games = RESET_GAMES
+                a_games = 0
+                b_games = 0
             elif b_games >= GAMES_WIN_SET and b_games - a_games >= MARGIN_WIN_SET:
-                sets_b += B_SET_WIN
+                sets_b += 1
                 result += f'{a_games}-{b_games} '
-                a_games = RESET_GAMES
-                b_games = RESET_GAMES
+                a_games = 0
+                b_games = 0
 
-            if a_games == COMPARING_TIEBREAK and b_games == COMPARING_TIEBREAK:
+            if a_games == GAMES_FOR_TIEBREAK and b_games == GAMES_FOR_TIEBREAK:
                 tiebreak = True
-                tiebreak_a_points = RESET_TIEBREAK_WIN_POINTS
-                tiebreak_b_points = RESET_TIEBREAK_WIN_POINTS
-                continue
-            
-            if sets_a == COMPARING_SETS_WINNER or sets_b == COMPARING_SETS_WINNER:
+                tiebreak_a_points = 0
+                tiebreak_b_points = 0
+
+            if sets_a == SETS_TO_WIN_MATCH or sets_b == SETS_TO_WIN_MATCH:
                 break
+
     return result
+
 
 # DO NOT TOUCH THE CODE BELOW
 if __name__ == '__main__':
