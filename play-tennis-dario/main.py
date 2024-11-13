@@ -21,7 +21,9 @@ def run(points: str) -> str:
 
     for point in points:
         if tiebreak:
-            if point == 'A':
+            if point not in 'AB':
+                break
+            elif point == 'A':
                 tiebreak_a_points += 1
             elif point == 'B':
                 tiebreak_b_points += 1
@@ -40,7 +42,9 @@ def run(points: str) -> str:
                 tiebreak_a_points = 0
                 tiebreak_b_points = 0
         else:
-            if point == 'A':
+            if point not in 'AB':
+                break
+            elif point == 'A':
                 a_points += 1
             elif point == 'B':
                 b_points += 1
