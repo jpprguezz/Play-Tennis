@@ -33,7 +33,8 @@ def run(points: str) -> str:
                 sets_b += 1
                 result += '6-7 '
 
-            if (tiebreak_a_points >= TIEBREAK_WIN_POINTS and tiebreak_a_points - tiebreak_b_points >= TIEBREAK_WIN_MARGIN) or (tiebreak_b_points >= TIEBREAK_WIN_POINTS and tiebreak_b_points - tiebreak_a_points >= TIEBREAK_WIN_MARGIN):
+            if ((tiebreak_a_points >= TIEBREAK_WIN_POINTS and tiebreak_a_points - tiebreak_b_points >= TIEBREAK_WIN_MARGIN) or 
+            (tiebreak_b_points >= TIEBREAK_WIN_POINTS and tiebreak_b_points - tiebreak_a_points >= TIEBREAK_WIN_MARGIN)):
                 tiebreak = False
                 a_games = b_games = 0
                 tiebreak_a_points = 0
