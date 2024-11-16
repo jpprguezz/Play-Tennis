@@ -20,35 +20,15 @@ def run(points: str) -> str:
     tiebreak_b_points = 0
 
     for point in points:
-        if tiebreak:
+        if a_games == GAMES_FOR_TIEBREAK and b_games == GAMES_FOR_TIEBREAK:
+            tiebreak = True
+        if not tiebreak:
             if point not in 'AB':
-                break
-            elif point == 'A':
-                tiebreak_a_points += 1
-            elif point == 'B':
-                tiebreak_b_points += 1
-
-            if tiebreak_a_points >= TIEBREAK_WIN_POINTS and tiebreak_a_points - tiebreak_b_points >= TIEBREAK_WIN_MARGIN:
-                sets_a += 1
-                result += '7-6 '
-            elif tiebreak_b_points >= TIEBREAK_WIN_POINTS and tiebreak_b_points - tiebreak_a_points >= TIEBREAK_WIN_MARGIN:
-                sets_b += 1
-                result += '6-7 '
-
-            if ((tiebreak_a_points >= TIEBREAK_WIN_POINTS and tiebreak_a_points - tiebreak_b_points >= TIEBREAK_WIN_MARGIN) or 
-            (tiebreak_b_points >= TIEBREAK_WIN_POINTS and tiebreak_b_points - tiebreak_a_points >= TIEBREAK_WIN_MARGIN)):
-                tiebreak = False
-                a_games = b_games = 0
-                tiebreak_a_points = 0
-                tiebreak_b_points = 0
-        else:
-            if point not in 'AB':
-                break
+                continue
             elif point == 'A':
                 a_points += 1
-            elif point == 'B':
+            else:
                 b_points += 1
-
             if a_points >= GAME_WIN_POINTS and a_points - b_points >= GAME_WIN_MARGIN:
                 a_games += 1
                 a_points = 0
@@ -57,7 +37,6 @@ def run(points: str) -> str:
                 b_games += 1
                 a_points = 0
                 b_points = 0
-
             if a_games >= GAMES_WIN_SET and a_games - b_games >= MARGIN_WIN_SET:
                 sets_a += 1
                 result += f'{a_games}-{b_games} '
@@ -68,20 +47,33 @@ def run(points: str) -> str:
                 result += f'{a_games}-{b_games} '
                 a_games = 0
                 b_games = 0
-
-            if a_games == GAMES_FOR_TIEBREAK and b_games == GAMES_FOR_TIEBREAK:
-                tiebreak = True
+        else:
+            if point not in 'AB':
+                continue
+            elif point == 'A':
+                tiebreak_a_points += 1
+            else:
+                tiebreak_b_points += 1
+            if tiebreak_a_points >= TIEBREAK_WIN_POINTS and tiebreak_a_points - tiebreak_b_points >= TIEBREAK_WIN_MARGIN:
+                sets_a += 1
+                result += '7-6 '
+            elif tiebreak_b_points >= TIEBREAK_WIN_POINTS and tiebreak_b_points - tiebreak_a_points >= TIEBREAK_WIN_MARGIN:
+                sets_b += 1
+                result += '6-7 '
+            if (tiebreak_a_points >= TIEBREAK_WIN_POINTS and tiebreak_a_points - tiebreak_b_points >= TIEBREAK_WIN_MARGIN or 
+                tiebreak_b_points >= TIEBREAK_WIN_POINTS and tiebreak_b_points - tiebreak_a_points >= TIEBREAK_WIN_MARGIN):
+                a_games = 0
+                b_games = 0
                 tiebreak_a_points = 0
                 tiebreak_b_points = 0
-
-            if sets_a == SETS_TO_WIN_MATCH or sets_b == SETS_TO_WIN_MATCH:
-                break
-
+                tiebreak = False
+        if sets_a == SETS_TO_WIN_MATCH or sets_b == SETS_TO_WIN_MATCH:
+            break
     return result
-
 
 # DO NOT TOUCH THE CODE BELOW
 if __name__ == '__main__':
     import vendor
 
     vendor.launch(run)
+
